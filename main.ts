@@ -65,6 +65,7 @@ basic.forever(function () {
         cars()
         basic.pause(500)
     }
+    frog.delete()
     game.addScore(1)
 })
 basic.forever(function () {
