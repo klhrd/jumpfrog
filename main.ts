@@ -3,7 +3,7 @@ let 車子list: game.LedSprite[] = []
 let 車車車車車2: number[] = []
 let 車車車車車3: number[] = []
 let frog: game.LedSprite = null
-let 撞飛號 = 0
+let 被撞飛號 = 0
 let 分身號 = 0
 function cars () {
     if (車車車車車1.pop() == 1) {
@@ -18,32 +18,36 @@ function cars () {
 }
 input.onButtonPressed(Button.A, function () {
     frog.change(LedSpriteProperty.X, -1)
-    撞飛號 = 0
+    被撞飛號 = 0
     for (let index = 0; index < 車子list.length; index++) {
-        if (frog.isTouching(車子list[撞飛號])) {
+        if (frog.isTouching(車子list[被撞飛號])) {
             game.removeLife(1)
         }
-        撞飛號 += 1
+        被撞飛號 += 1
     }
 })
 input.onButtonPressed(Button.AB, function () {
-    frog.change(LedSpriteProperty.Y, -1)
-    撞飛號 = 0
-    for (let index = 0; index < 車子list.length; index++) {
-        if (frog.isTouching(車子list[撞飛號])) {
-            game.removeLife(1)
+    if (game.isGameOver()) {
+        control.reset()
+    } else {
+        frog.change(LedSpriteProperty.Y, -1)
+        被撞飛號 = 0
+        for (let index = 0; index < 車子list.length; index++) {
+            if (frog.isTouching(車子list[被撞飛號])) {
+                game.removeLife(1)
+            }
+            被撞飛號 += 1
         }
-        撞飛號 += 1
     }
 })
 input.onButtonPressed(Button.B, function () {
     frog.change(LedSpriteProperty.X, 1)
-    撞飛號 = 0
+    被撞飛號 = 0
     for (let index = 0; index < 車子list.length; index++) {
-        if (frog.isTouching(車子list[撞飛號])) {
+        if (frog.isTouching(車子list[被撞飛號])) {
             game.removeLife(1)
         }
-        撞飛號 += 1
+        被撞飛號 += 1
     }
 })
 basic.forever(function () {
@@ -60,10 +64,18 @@ basic.forever(function () {
                 車子list[分身號].delete()
             }
             車子list[分身號].change(LedSpriteProperty.X, -1)
+            if (frog.isTouching(車子list[分身號])) {
+                game.removeLife(1)
+            }
             分身號 += 1
         }
         cars()
         basic.pause(500)
+    }
+    分身號 = 0
+    for (let index = 0; index < 車子list.length; index++) {
+        車子list[分身號].delete()
+        分身號 += 1
     }
     frog.delete()
     game.addScore(1)
