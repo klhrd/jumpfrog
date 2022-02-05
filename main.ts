@@ -70,6 +70,7 @@ basic.forever(function () {
     車子list = []
     game.setLife(3)
     frog = game.createSprite(2, 4)
+    frog.set(LedSpriteProperty.Blink, 200)
     while (!(frog.get(LedSpriteProperty.Y) == 0)) {
         分身號 = 0
         for (let index = 0; index < 車子list.length; index++) {
