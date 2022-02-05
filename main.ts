@@ -5,6 +5,23 @@ let 車車車車車3: number[] = []
 let frog: game.LedSprite = null
 let 被撞飛號 = 0
 let 分身號 = 0
+input.onLogoEvent(TouchButtonEvent.LongPressed, function () {
+    if (game.isGameOver()) {
+        basic.showLeds(`
+            . . . # .
+            # . # # #
+            # . . # .
+            # . . # .
+            # # # # .
+            `)
+        basic.pause(500)
+        basic.clearScreen()
+        basic.pause(500)
+        if (input.logoIsPressed()) {
+            control.reset()
+        }
+    }
+})
 function cars () {
     if (車車車車車1.pop() == 1) {
         車子list.push(game.createSprite(4, 1))
@@ -27,17 +44,13 @@ input.onButtonPressed(Button.A, function () {
     }
 })
 input.onButtonPressed(Button.AB, function () {
-    if (game.isGameOver()) {
-        control.reset()
-    } else {
-        frog.change(LedSpriteProperty.Y, -1)
-        被撞飛號 = 0
-        for (let index = 0; index < 車子list.length; index++) {
-            if (frog.isTouching(車子list[被撞飛號])) {
-                game.removeLife(1)
-            }
-            被撞飛號 += 1
+    frog.change(LedSpriteProperty.Y, -1)
+    被撞飛號 = 0
+    for (let index = 0; index < 車子list.length; index++) {
+        if (frog.isTouching(車子list[被撞飛號])) {
+            game.removeLife(1)
         }
+        被撞飛號 += 1
     }
 })
 input.onButtonPressed(Button.B, function () {
