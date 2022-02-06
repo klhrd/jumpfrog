@@ -1,6 +1,7 @@
 let 車車車車車1: number[] = []
 let 車子list: game.LedSprite[] = []
 let 車車車車車2: number[] = []
+let 車子list2: game.LedSprite[] = []
 let 車車車車車3: number[] = []
 let frog: game.LedSprite = null
 let 被撞飛號 = 0
@@ -10,7 +11,7 @@ function cars () {
         車子list.push(game.createSprite(4, 1))
     }
     if (車車車車車2.pop() == 1) {
-        車子list.push(game.createSprite(4, 2))
+        車子list2.push(game.createSprite(0, 2))
     }
     if (車車車車車3.pop() == 1) {
         車子list.push(game.createSprite(4, 3))
@@ -25,12 +26,26 @@ input.onButtonPressed(Button.A, function () {
         }
         被撞飛號 += 1
     }
+    被撞飛號 = 0
+    for (let index = 0; index < 車子list2.length; index++) {
+        if (frog.isTouching(車子list2[被撞飛號])) {
+            game.removeLife(1)
+        }
+        被撞飛號 += 1
+    }
 })
 input.onButtonPressed(Button.AB, function () {
     frog.change(LedSpriteProperty.Y, -1)
     被撞飛號 = 0
     for (let index = 0; index < 車子list.length; index++) {
         if (frog.isTouching(車子list[被撞飛號])) {
+            game.removeLife(1)
+        }
+        被撞飛號 += 1
+    }
+    被撞飛號 = 0
+    for (let index = 0; index < 車子list2.length; index++) {
+        if (frog.isTouching(車子list2[被撞飛號])) {
             game.removeLife(1)
         }
         被撞飛號 += 1
@@ -45,12 +60,20 @@ input.onButtonPressed(Button.B, function () {
         }
         被撞飛號 += 1
     }
+    被撞飛號 = 0
+    for (let index = 0; index < 車子list2.length; index++) {
+        if (frog.isTouching(車子list2[被撞飛號])) {
+            game.removeLife(1)
+        }
+        被撞飛號 += 1
+    }
 })
 basic.forever(function () {
     車車車車車1 = []
     車車車車車2 = []
     車車車車車3 = []
     車子list = []
+    車子list2 = []
     game.setLife(3)
     frog = game.createSprite(2, 4)
     frog.set(LedSpriteProperty.Blink, 200)
@@ -66,12 +89,28 @@ basic.forever(function () {
             }
             分身號 += 1
         }
+        分身號 = 0
+        for (let index = 0; index < 車子list2.length; index++) {
+            if (車子list2[分身號].get(LedSpriteProperty.X) == 4) {
+                車子list2[分身號].delete()
+            }
+            車子list2[分身號].change(LedSpriteProperty.X, 1)
+            if (frog.isTouching(車子list2[分身號])) {
+                game.removeLife(1)
+            }
+            分身號 += 1
+        }
         cars()
-        basic.pause(500)
+        basic.pause(700)
     }
     分身號 = 0
     for (let index = 0; index < 車子list.length; index++) {
         車子list[分身號].delete()
+        分身號 += 1
+    }
+    分身號 = 0
+    for (let index = 0; index < 車子list2.length; index++) {
+        車子list2[分身號].delete()
         分身號 += 1
     }
     frog.delete()
